@@ -1,24 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Burred QR Maker</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f3f4f6;
+        }
+        .container {
+            text-align: center;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        input {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #qr-code {
+            margin-top: 20px;
+            filter: none;
+        }
+        .blur-button {
+            margin-top: 10px;
+            display: inline-block;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 </head>
 <body>
-  <h1>Burred QR Maker</h1>
-  <form id="qr-form">
-    <label for="qr-text">QRコードの内容:</label>
-    <input type="text" id="qr-text" placeholder="例: https://example.com" required>
-    <label for="mosaic-level">モザイク強度:</label>
-    <input type="range" id="mosaic-level" min="1" max="20" value="5">
-    <button type="submit">QRコードを生成</button>
-  </form>
-  <div id="qr-container">
-    <canvas id="qr-canvas"></canvas>
-  </div>
-  <script src="qrcode.min.js"></script>
-  <script src="script.js"></script>
+    <div class="container">
+        <h1>QR Code Generator</h1>
+        <input type="text" id="input-text" placeholder="Enter text to generate QR code">
+        <br>
+        <button onclick="generateQRCode()">Generate QR Code</button>
+        <button class="blur-button" onclick="toggleBlur()">Toggle Blur</button>
+        <br>
+        <canvas id="qr-code"></canvas>
+    </div>
+
+    <script>
+        let isBlurred = false;
+
+        function generateQRCode() {
+            const text = document.getElementById('input-text').value;
+            const qrCanvas = document.getElementById('qr-code');
+            
+            if (text.trim() === '') {
+                alert('Please enter some text!');
+                return;
+            }
+
+            QRCode.toCanvas(qrCanvas, text, {
+                width: 200
+            }, function (error) {
+                if (error) console.error(error);
+                console.log('QR code generated!');
+            });
+            qrCanvas.style.filter = 'none';
+            isBlurred = false;
+        }
+
+        function toggleBlur() {
+            const qrCanvas = document.getElementById('qr-code');
+            isBlurred = !isBlurred;
+            qrCanvas.style.filter = isBlurred ? 'blur(5px)' : 'none';
+        }
+    </script>
 </body>
 </html>
