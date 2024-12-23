@@ -1,0 +1,16 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 20px;
+  }
+  form {
+    margin-bottom: 20px;
+  }
+  #qr-container {
+    display: inline-block;
+    margin-top: 20px;
+  }
+  canvas {
+    border: 1px solid #ccc;
+  }
+  
